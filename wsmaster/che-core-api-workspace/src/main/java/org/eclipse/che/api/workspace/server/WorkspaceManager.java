@@ -233,11 +233,7 @@ public class WorkspaceManager {
      */
     public List<WorkspaceImpl> getWorkspaces(String user) throws ServerException {
         requireNonNull(user, "Required non-null user id");
-        final List<WorkspaceImpl> workspaces = workspaceDao.getWorkspaces(user);
-        for (WorkspaceImpl workspace : workspaces) {
-            normalizeState(workspace);
-        }
-        return workspaces;
+        return workspaceDao.getWorkspaces(user);
     }
 
     /**

@@ -213,9 +213,6 @@ public class WorkspaceManagerTest {
         final WorkspaceImpl workspace2 = createAndMockWorkspace(config, NAMESPACE_2);
 
         when(workspaceDao.getWorkspaces(NAMESPACE)).thenReturn(asList(workspace1, workspace2));
-        final RuntimeDescriptor descriptor = createDescriptor(workspace2, RUNNING);
-        when(runtimes.get(workspace2.getId())).thenReturn(descriptor);
-        when(runtimes.get(workspace1.getId())).thenThrow(new NotFoundException("no runtime"));
 
         // when
         final List<WorkspaceImpl> result = workspaceManager.getWorkspaces(NAMESPACE);
@@ -224,11 +221,9 @@ public class WorkspaceManagerTest {
         assertEquals(result.size(), 2);
 
         final WorkspaceImpl res1 = result.get(0);
-        assertEquals(res1.getStatus(), STOPPED, "Workspace status wasn't changed from STARTING to STOPPED");
         assertFalse(res1.isTemporary(), "Workspace must be permanent");
 
         final WorkspaceImpl res2 = result.get(1);
-        assertEquals(res2.getStatus(), RUNNING, "Workspace status wasn't changed to the runtime instance status");
         assertFalse(res2.isTemporary(), "Workspace must be permanent");
     }
 
